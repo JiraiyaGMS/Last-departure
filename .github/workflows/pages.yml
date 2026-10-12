@@ -3,13 +3,16 @@
 # Before the first run, enable Pages on the repository:
 #   Settings -> Pages -> Build and deployment -> Source: "GitHub Actions"
 #
-# This only runs on `main` or when triggered by hand, so it will not fail on a
-# feature branch before Pages has been turned on.
+# Triggers on a push to the repository's default branch, or on demand from the
+# Actions tab. Both branch names are listed so this keeps working if the default
+# is later renamed to main.
 name: Deploy to Pages
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - claude/last-departure-horror-game-wx7g77
   workflow_dispatch:
 
 permissions:

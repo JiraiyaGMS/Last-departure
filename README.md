@@ -88,10 +88,10 @@ or inside an embedded frame, and the asset filenames are pinned rather than
 content-hashed so a rebuild does not churn the paths a host already references.
 
 **GitHub Pages.** `.github/workflows/pages.yml` builds and publishes on every
-push to `main`, or on demand from the Actions tab. It needs Pages switched on
-first: **Settings → Pages → Build and deployment → Source: "GitHub Actions"**.
-The workflow is scoped to `main` and `workflow_dispatch`, so it will not run —
-or fail — on a feature branch before that is done.
+push to the default branch, or on demand from the Actions tab. Enable Pages
+first, or the run will fail: **Settings → Pages → Build and deployment →
+Source: "GitHub Actions"**. Then either push, or run it by hand from
+**Actions → Deploy to Pages → Run workflow**.
 
 **itch.io**, as the doc suggests: upload the contents of `dist/` as a zip, tick
 *This file will be played in the browser*, and set the viewport to 960×600.
