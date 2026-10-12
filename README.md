@@ -80,6 +80,29 @@ sightline that vanishes if you look straight at it, and the PA using your name.
 **The Echoes** mutter, and move only while unobserved. You never catch one
 moving. You only ever notice that it is nearer.
 
+## Deploying
+
+The build is a plain static folder — `npm run build` writes `dist/`, which can be
+uploaded anywhere. `vite.config.js` sets `base: './'` so it works from a subpath
+or inside an embedded frame, and the asset filenames are pinned rather than
+content-hashed so a rebuild does not churn the paths a host already references.
+
+**GitHub Pages.** `.github/workflows/pages.yml` builds and publishes on every
+push to `main`, or on demand from the Actions tab. It needs Pages switched on
+first: **Settings → Pages → Build and deployment → Source: "GitHub Actions"**.
+The workflow is scoped to `main` and `workflow_dispatch`, so it will not run —
+or fail — on a feature branch before that is done.
+
+**itch.io**, as the doc suggests: upload the contents of `dist/` as a zip, tick
+*This file will be played in the browser*, and set the viewport to 960×600.
+
+Mouse look uses Pointer Lock where the host allows it and falls back to
+click-and-drag where it does not, so the game stays playable embedded.
+
+One expected console entry on load: a `404` for `models/station.glb`. That is the
+deliberate probe described below — the loader checks for a Blender export and
+builds the station from data when there isn't one.
+
 ## Three places this differs from the doc
 
 The doc's stack assumes tools this toolchain does not have. In each case the

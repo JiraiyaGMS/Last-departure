@@ -1,0 +1,67 @@
+<title>Last Departure</title>
+<style>
+:root{
+    color-scheme: dark;--green:#7ea04d;--sick:#9fd356;--rust:#b2532a;--cold:#2a3f52;--ink:#05060500;--bone:#cfd3c4}*{box-sizing:border-box}html,body{height:100%;color:var(--bone);background:#000;margin:0;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;overflow:hidden}#view{image-rendering:pixelated;display:block;position:fixed;inset:0}.layer{pointer-events:none;z-index:5;position:fixed;inset:0}#hud{z-index:10}#reticle{background:#cfd3c480;border-radius:50%;width:3px;height:3px;margin:-1.5px 0 0 -1.5px;transition:opacity .2s;position:absolute;top:50%;left:50%}#prompt{letter-spacing:.12em;text-transform:uppercase;text-shadow:0 0 6px #000,0 2px #000;opacity:0;white-space:nowrap;font-size:13px;transition:opacity .12s;position:absolute;top:56%;left:50%;transform:translate(-50%)}#prompt b{color:var(--sick)}#clock{letter-spacing:.18em;color:var(--bone);text-shadow:0 0 8px #000;opacity:.72;font-size:15px;position:absolute;bottom:14px;left:16px}#loopn{letter-spacing:.22em;opacity:.4;text-transform:uppercase;font-size:10px;position:absolute;bottom:34px;left:16px}#carry{letter-spacing:.14em;text-align:right;opacity:.75;text-shadow:0 0 8px #000;font-size:11px;line-height:1.7;position:absolute;bottom:14px;right:16px}#carry .on{color:var(--sick)}.meter{opacity:0;background:#0009;width:120px;height:3px;transition:opacity .25s;position:absolute;left:50%;transform:translate(-50%)}.meter>i{width:100%;height:100%;transition:width 80ms linear;display:block}#breath{bottom:72px}#breath>i{background:var(--bone)}#batt{width:60px;bottom:62px}#batt>i{background:var(--rust)}#subs{text-align:center;letter-spacing:.04em;text-shadow:0 2px 10px #000,0 0 3px #000;width:min(760px,84vw);font-size:14px;line-height:1.65;position:absolute;bottom:104px;left:50%;transform:translate(-50%)}#subs .pa{color:#cdbf8a;font-style:italic}#subs .ech{color:#8fa6b8}#subs .note{color:var(--sick)}#subs div{opacity:0;animation:.25s forwards subIn}@keyframes subIn{to{opacity:1}}.panel{z-index:40;-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);background:#030403f0;place-items:center;display:none;position:fixed;inset:0}.panel.show{display:grid}.sheet{background:repeating-linear-gradient(0deg,#0e100c 0 26px,#111410 26px 27px);border:1px solid #23281f;width:min(720px,90vw);max-height:86vh;padding:30px 34px;overflow:auto;box-shadow:0 0 0 1px #000,0 30px 80px #000000e6}.sheet h2{letter-spacing:.3em;text-transform:uppercase;color:var(--sick);margin:0 0 4px;font-size:15px}.sheet h3{letter-spacing:.26em;text-transform:uppercase;color:#7d8a6b;border-bottom:1px solid #1d221a;margin:22px 0 8px;padding-bottom:6px;font-size:11px}.sheet .sub{letter-spacing:.16em;color:#5f6a53;margin:0 0 18px;font-size:11px}.sheet ul{margin:0;padding-left:18px;font-size:13px;line-height:1.85}.sheet li{margin-bottom:3px}.sheet li.struck{opacity:.45;text-decoration:line-through}.sheet li.hand{color:#b9a86a;letter-spacing:.02em;font-family:Bradley Hand,Segoe Script,cursive}.sheet .empty{color:#4e5745;font-size:12px;font-style:italic}.sheet .foot{letter-spacing:.2em;color:#4e5745;text-transform:uppercase;margin-top:24px;font-size:10px}#title{z-index:60;background:#000;place-items:center;display:grid;position:fixed;inset:0}#title .wrap{text-align:center;max-width:min(560px,88vw)}#title h1{letter-spacing:.3em;color:#cfd3c4;text-shadow:0 0 30px #9fd35624;margin:0;font-size:clamp(30px,7vw,54px);font-weight:400}#title .tag{letter-spacing:.34em;color:#5c6650;text-transform:uppercase;margin:14px 0 0;font-size:11px}#title .warn{color:#8d7f6e;letter-spacing:.04em;text-align:left;background:#0c0a09;border:1px solid #2a1f1a;margin:30px auto 0;padding:14px 16px;font-size:11px;line-height:1.8}#title .warn b{color:var(--rust);letter-spacing:.14em}#title .field{margin:26px 0 0}#title label{letter-spacing:.26em;color:#5c6650;text-transform:uppercase;margin-bottom:10px;font-size:10px;display:block}#title input{width:260px;max-width:80vw;color:var(--sick);font:inherit;letter-spacing:.16em;text-align:center;background:#0a0c0a;border:1px solid #27301f;outline:none;padding:11px 13px;font-size:14px}#title input:focus{border-color:#47552f;box-shadow:0 0 0 1px #1b2215}#title .opts{letter-spacing:.14em;color:#6b7560;text-transform:uppercase;flex-wrap:wrap;justify-content:center;gap:18px;margin:22px 0 0;font-size:10px;display:flex}#title .opts label{letter-spacing:.14em;cursor:pointer;align-items:center;gap:7px;margin:0;display:flex}#title .opts input{width:auto;padding:0}#title button{color:var(--sick);font:inherit;letter-spacing:.3em;text-transform:uppercase;cursor:pointer;background:#121610;border:1px solid #3a4a28;margin-top:28px;padding:13px 40px;font-size:12px;transition:all .18s}#title button:hover{background:#19200f;border-color:#5d7540;box-shadow:0 0 24px #9fd3561f}#title .hint{letter-spacing:.2em;color:#434c3c;margin:20px 0 0;font-size:10px}#title.gone{display:none}#pause{z-index:50;background:#000000db;place-items:center;display:none}#pause.show{display:grid}#pause .wrap{text-align:center;letter-spacing:.24em;color:#6b7560;text-transform:uppercase;font-size:11px;line-height:2.4}#pause .big{color:var(--sick);letter-spacing:.3em;margin-bottom:18px;font-size:14px;display:block}#black{z-index:55;opacity:0;pointer-events:none;background:#000;transition:opacity .18s;position:fixed;inset:0}#wake{z-index:56;pointer-events:none;opacity:0;place-items:center;display:grid;position:fixed;inset:0}#wake .t{letter-spacing:.36em;text-transform:uppercase;color:#7d8a6b;text-align:center;font-size:13px;line-height:2.6}#wake .t b{color:var(--rust);letter-spacing:.3em;font-size:11px;font-weight:400;display:block}#vig{z-index:8;opacity:.55;transition:opacity .4s;box-shadow:inset 0 0 160px 40px #000000f2}#near{z-index:9;opacity:0;background:radial-gradient(#0000 24%,#1c060499 100%);transition:opacity .5s}#loading{z-index:70;letter-spacing:.3em;color:#49523f;text-transform:uppercase;background:#000;place-items:center;font-size:11px;display:grid;position:fixed;inset:0}
+</style>
+
+<canvas id="view"></canvas>
+
+  <div class="layer" id="vig"></div>
+  <div class="layer" id="near"></div>
+
+  <div class="layer" id="hud">
+    <div id="reticle"></div>
+    <div id="prompt"></div>
+    <div id="clock">11:47 PM</div>
+    <div id="loopn">Loop 1</div>
+    <div id="carry"></div>
+    <div class="meter" id="breath"><i></i></div>
+    <div class="meter" id="batt"><i></i></div>
+    <div id="subs"></div>
+  </div>
+
+  <div class="panel" id="notebook"><div class="sheet" id="notebookSheet"></div></div>
+  <div class="panel" id="sign"><div class="sheet" id="signSheet"></div></div>
+
+  <div class="panel" id="pause"><div class="wrap">
+    <span class="big">Paused</span>
+    Esc / click &mdash; resume &nbsp;&middot;&nbsp; Tab &mdash; notebook<br>
+    WASD &mdash; move &nbsp;&middot;&nbsp; Ctrl &mdash; crouch (quiet)<br>
+    Shift &mdash; run (rule one says don't)<br>
+    E &mdash; interact / hide &nbsp;&middot;&nbsp; Space &mdash; hold breath<br>
+    F &mdash; torch &nbsp;&middot;&nbsp; Q &mdash; stow ticket &nbsp;&middot;&nbsp; R &mdash; punch slip<br>
+    Y &mdash; answer the PA (do not) &nbsp;&middot;&nbsp; M &mdash; mute
+  </div></div>
+
+  <div id="black"></div>
+  <div id="wake"><div class="t" id="wakeText"></div></div>
+
+  <div id="title"><div class="wrap">
+    <h1>LAST&nbsp;DEPARTURE</h1>
+    <p class="tag">Grayhollow Transit Center &middot; Nov 3, 1987</p>
+
+    <div class="warn">
+      <b>Warning.</b> Horror. Sudden loud sound, darkness, stalking,
+      flickering fluorescent light. Headphones are strongly recommended and
+      make this considerably worse. If flashing light is a problem for you,
+      turn <i>Reduced flashing</i> on below &mdash; the game stays just as dark.
+    </div>
+
+    <div class="field">
+      <label for="pname">Name on your ticket</label>
+      <input id="pname" maxlength="18" autocomplete="off" spellcheck="false" placeholder="…" />
+    </div>
+
+    <div class="opts">
+      <label><input type="checkbox" id="optFlash" /> Reduced flashing</label>
+      <label><input type="checkbox" id="optSubs" checked /> Subtitles</label>
+      <label><input type="checkbox" id="optInvert" /> Invert Y</label>
+    </div>
+
+    <button id="begin">Begin</button>
+    <p class="hint">WASD move &middot; mouse look &middot; E interact &middot; Tab notebook &middot; Esc pause</p>
+  </div></div>
+
+  <div id="loading">loading the terminal…</div>
+
+<script type="module" src="assets/game.js"></script>

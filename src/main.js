@@ -213,6 +213,14 @@ function bindTitle() {
     G.loop.start();
     G.player.requestLock(canvas);
 
+    // Pointer lock is blocked in plenty of embedded contexts. If it has not been
+    // granted shortly after starting, say so once and point at the fallback.
+    setTimeout(() => {
+      if (G.running && !G.player.lockWorks) {
+        G.ui.say('Mouse look: hold the left button and drag.', 'note');
+      }
+    }, 1600);
+
     // the first thing that happens is the building noticing you woke up
     setTimeout(() => G.audio.say('Grayhollow Transit Center. The terminal is closed to the public.',
       { voice: 'pa' }), 2200);

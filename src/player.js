@@ -73,27 +73,45 @@ export class Player {
   // ── input ─────────────────────────────────────────────────────────────────
 
   _bindInput() {
+    const SWALLOW = new Set(['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight',
+      'KeyW', 'KeyA', 'KeyS', 'KeyD', 'Tab', 'Slash', 'Quote']);
     this._onKeyDown = e => {
+      // these would otherwise scroll or quick-find in the page hosting the game
+      if (SWALLOW.has(e.code)) e.preventDefault();
       if (e.repeat) return;
       this.keys[e.code] = true;
     };
     this._onKeyUp = e => { this.keys[e.code] = false; };
+    // Pointer lock is refused in a lot of embedded contexts, so dragging with
+    // the left button held is always available as a fallback. Without it the
+    // game is unplayable anywhere the lock is blocked.
     this._onMove = e => {
-      if (!this._locked) return;
-      this.yaw -= e.movementX * this.sens;
-      this.pitch += (this.invertY ? 1 : -1) * e.movementY * this.sens;
+      const dragging = this._dragging && !this._locked;
+      if (!this._locked && !dragging) return;
+      const k = dragging ? this.sens * 1.35 : this.sens;
+      this.yaw -= e.movementX * k;
+      this.pitch += (this.invertY ? 1 : -1) * e.movementY * k;
       this.pitch = THREE.MathUtils.clamp(this.pitch, -1.45, 1.45);
     };
+    this._onDown = e => { if (e.button === 0) this._dragging = true; };
+    this._onUp = e => { if (e.button === 0) this._dragging = false; };
     this._onLockChange = () => {
       this._locked = document.pointerLockElement != null;
-      if (!this._locked) this.keys = Object.create(null);
+      if (this._locked) { this._everLocked = true; this._dragging = false; }
+      else this.keys = Object.create(null);
     };
 
     addEventListener('keydown', this._onKeyDown);
     addEventListener('keyup', this._onKeyUp);
     document.addEventListener('mousemove', this._onMove);
+    document.addEventListener('mousedown', this._onDown);
+    addEventListener('mouseup', this._onUp);
+    addEventListener('blur', this._onUp);
     document.addEventListener('pointerlockchange', this._onLockChange);
   }
+
+  /** true once a lock request has actually been granted at least once */
+  get lockWorks() { return this._everLocked === true; }
 
   /**
    * Pointer lock rejects (and in newer Chrome, throws an unhandled rejection) if
@@ -112,6 +130,9 @@ export class Player {
     removeEventListener('keydown', this._onKeyDown);
     removeEventListener('keyup', this._onKeyUp);
     document.removeEventListener('mousemove', this._onMove);
+    document.removeEventListener('mousedown', this._onDown);
+    removeEventListener('mouseup', this._onUp);
+    removeEventListener('blur', this._onUp);
     document.removeEventListener('pointerlockchange', this._onLockChange);
   }
 
